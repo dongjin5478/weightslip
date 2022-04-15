@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="sliderloader" *ngIf="isLoading">
+        <h1>Loading...</h1>
+    </div>
+    <div class="container contact">
+        <div class="row">
+            <div class="col-md-3 media1">
+                <div class="contact-info">
+                    <img src="/assets/download.png" style="width: 5rem;height: 5rem;" alt="image" />
+                    <h3>Download Weight Slip</h3>
+                    <p>You are 30 seconds away from generating your weight slip report !!</p>
+                    <a class="btn btn-success" href="https://dillipfolio.web.app" target="_blank">DILLIPFOLIO</a>
+                </div>
+            </div>
+            <div class="col-md-9 media2">
+                <div class="contact-form">
+                    <form #reportForm="ngForm" (ngSubmit)="formSubmit(reportForm)" ngNativeValidate>
+                        <p style="color: red;">All * Mark Field are mandatory to Fill.</p>
+                        <div class="form-row p-2 py-4">
+                            <div class="form-group col-md-6">
+                                <label for="address">Address <span>*</span></label>
+                                <input [(ngModel)]="user.address" name="address" type="text" class="form-control"
+                                    id="address" style="text-transform:uppercase">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="vehiclenumber">Vehicle Number <span>*</span></label>
+                                <input [(ngModel)]="user.vehicleNumber" name="vehicleNumber" type="text"
+                                    class="form-control" id="vehiclenumber"
+                                    pattern="^[A-Z|a-z]{2}\s?[0-9]{1,2}\s?[A-Z|a-z]{0,3}\s?[0-9]{4}$"
+                                    title="Please enter a valid Vehicle Number" maxlength="11"
+                                    style="text-transform:uppercase" required>
+                            </div>
+                        </div>
+                        <div class="form-row p-2 py-4">
+                            <div class="form-group col-md-6">
+                                <label for="grossweight">Gross Weight( in Kg ) <span>*</span></label>
+                                <input [(ngModel)]="user.grossWeight" name="grossWeight" type="number"
+                                    class="form-control" id="grossweight"
+                                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                    maxlength="8" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="grossweightdate">Gross Weight Date & Time <span>*</span></label>
+                                <input [(ngModel)]="user.grossWeightDate" name="grossWeightDate" type="datetime-local"
+                                    class="form-control" id="grossweightdate" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row p-2 py-4">
+                            <div class="form-group col-md-6">
+                                <label for="tareweight">Tare Weight( in Kg ) <span>*</span></label>
+                                <input [(ngModel)]="user.tareWeight" name="tareWeight" type="number"
+                                    class="form-control" id="tareweight"
+                                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                    maxlength="8" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="tareweightdate">Tare Weight Date & Time <span>*</span></label>
+                                <input [(ngModel)]="user.tareWeightDate" name="tareWeightDate" type="datetime-local"
+                                    class="form-control" id="tareweightdate" required>
+                            </div>
+                            <div class="form-check">
+                                <input [(ngModel)]="user.checked" name="checked" type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <label class="form-check-label" for="exampleCheck1">Save weight slip details.</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row p-2 d-flex flex-wrap align-items-center">
+                                <div class="col-md-5" id="buttondiv">
+                                    <button type="submit" class="btn btn-default" id="download">
+                                        <!-- <i class="fa fa-download" aria-hidden="true"></i> -->
+                                        <img src="/assets/download-white.svg" />
+                                        Download
+                                    </button>
+                                    <div id="downloading" *ngIf="isProgress">
+                                        <span class="spinner-border spinner-border-sm mr-1"></span>
+                                        Downloading...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <h6 class="text-center pt-1 pb-3">This web Application is Designed and Developed By <a
+                    href="https://dillipfolio.web.app" target="_blank" >Dillip K Sahoo</a>
+            </h6>
+        </footer>
+        <!-- <h3 class="text-center py-3">Thank You ! Visit Again</h3> -->
+        <!-- {{user | json}} -->
+    </div>
+</body>
+
+</html>
