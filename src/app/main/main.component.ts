@@ -10,32 +10,32 @@ import { FormsModule, NgForm } from '@angular/forms';
 })
 export class MainComponent implements OnInit {
 
-  constructor(private service: ReportService,private route:AppRoutingModule) { }
+  constructor(private service: ReportService, private route: AppRoutingModule) { }
 
   ngOnInit(): void {
     this.isLoading = true;
     this.service.startApi().subscribe(
-      (data:any)=>{
+      (data: any) => {
         this.isLoading = false;
       },
-      (error:any)=>{
+      (error: any) => {
         this.isLoading = false;
       }
     );
   }
-  isProgress:boolean = false;
-  isLoading:boolean = false;
+  isProgress: boolean = false;
+  isLoading: boolean = false;
   public user = {
-    address: 'boudh',
+    address: 'BOUDH',
     vehicleNumber: '',
     grossWeight: '',
     tareWeight: '',
-    grossWeightDate:'',
+    grossWeightDate: '',
     tareWeightDate: '',
-    checked:false
+    checked: false
   }
 
-  formSubmit(reportForm : NgForm) {
+  formSubmit(reportForm: NgForm) {
     if (this.user.tareWeight >= this.user.grossWeight) {
       Swal.fire({
         position: 'top-end',
@@ -50,34 +50,23 @@ export class MainComponent implements OnInit {
 
     this.service.generatePdf(this.user).subscribe(
       (data: any) => {
-        // let blob:any = new Blob([data], { type: 'text/json; charset=utf-8' });
-        // const url = window.URL.createObjectURL(blob);
-        // window.open(url);
-        // window.location.href = data.url;
-        
-        // console.log(data);
-        // alert('Success');
 
-        let blob: any = new Blob([data], { type: 'application/pdf' });
+        let byteArray = data.byteData;
+        let fileName = data.fileName;
 
-        var today = new Date();
-        let count = 0;
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var ss = String(today.getSeconds);
-        var yyyy = String(today.getFullYear());
-        let date = dd + '-' + mm + '-' + yyyy;
+        const linkSource = `data:application/pdf;base64,${byteArray}`;
+        const downloadLink = document.createElement("a");
+        const pdfFileName = fileName;
+        downloadLink.href = linkSource;
+        downloadLink.download = pdfFileName;
+        downloadLink.click();
 
-        var downloadURL = window.URL.createObjectURL(data);
-        var link = document.createElement('a');
-        link.href = downloadURL;
-        link.download = "Weight Slip_" + date+ ".pdf";
-        link.click();
+
         this.isProgress = false;
         Swal.fire({
           icon: 'success',
           title: 'Success &#128540;',
-          text:'File has been Downloaded',
+          text: 'File has been Downloaded',
           timer: 6000
         }).then(() => {
           // this.service.refresh();

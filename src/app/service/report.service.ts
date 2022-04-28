@@ -11,7 +11,7 @@ export class ReportService {
   
   public generatePdf(user : any)
   {
-      return this.http.post(`${baseUrl}weightslip`,user,{responseType: 'blob'});
+      return this.http.post(`${baseUrl}weightslip`,user);
   }
 
   public startApi()
